@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Préstamos Activos</title>
+</head>
+<body>
+    <h1>📋 Préstamos Activos</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>ISBN Libro</th>
+            <th>Cliente</th>
+            <th>Prestado por</th>
+            <th>Fecha préstamo</th>
+            <th>Vence</th>
+        </tr>
+        {% for prestamo in prestamos %}
+        <tr>
+            <td>{{ prestamo[0] }}</td>
+            <td>{{ prestamo[1] }}</td>
+            <td>{{ prestamo[2] }}</td>
+            <td>{{ prestamo[3] }}</td>
+            <td>{{ prestamo[5] }}</td>
+            <td>{{ prestamo[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/empleado">Volver</a>
+</body>
+</html>

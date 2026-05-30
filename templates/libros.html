@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Libros</title>
+</head>
+<body>
+    <h1>📚 Catálogo de Libros</h1>
+    
+    <table border="1">
+        <tr>
+            <th>ISBN</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Editorial</th>
+            <th>Año</th>
+            <th>Disponibles</th>
+        </tr>
+        {% for libro in libros %}
+        <tr>
+            <td>{{ libro[0] }}</td>
+            <td>{{ libro[1] }}</td>
+            <td>{{ libro[2] }}</td>
+            <td>{{ libro[3] }}</td>
+            <td>{{ libro[4] }}</td>
+            <td>{{ libro[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/empleado">Volver</a>
+</body>
+</html>

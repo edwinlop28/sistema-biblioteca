@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Empleado</title>
+</head>
+<body>
+    <h1>📚 Bienvenido {{ nombre }}</h1>
+    <h3>Panel Empleado</h3>
+    
+    <ul>
+        <li><a href="/prestamo">Registrar préstamo</a></li>
+       <li><a href="/devolucion">Registrar devolución</a></li>
+        <li><a href="/libros">Ver libros</a></li>
+        <a href="/prestamos/activos">Ver préstamos activos</a>
+        <li><a href="/clientes/nuevo">Registrar cliente</a></li>
+        <li><a href="/ver/clientes">Ver clientes</a></li>
+        {% if session["rol"] == "admin" %}
+        <li><a href="/empleados/nuevo">Registrar empleado</a></li>
+        {% endif %}
+    </ul>
+    
+    <a href="/logout">Cerrar sesión</a>
+</body>
+</html>

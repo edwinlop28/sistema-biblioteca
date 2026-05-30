@@ -1,0 +1,19 @@
+<h1>Clientes registrados</h1>
+
+{% for cliente in clientes %}
+
+    <div>
+        <h3>{{ cliente.get_nombre() }}</h3>
+        
+        <p>Cédula: {{ cliente.get_cedula() }}</p>
+
+        <p>Email: {{ cliente.get_email() }}</p>
+
+        <p>Teléfono: {{ cliente.get_telefono() }}</p>
+
+        <p>Dirección: {{ cliente.get_direccion() }}</p>
+
+        <hr>
+    </div>
+
+{% endfor %}

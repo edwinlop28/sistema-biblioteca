@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Empleado</title>
+</head>
+<body>
+    <h1>👷 Registrar Empleado</h1>
+
+    <form method="POST">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required><br><br>
+        
+        <label>Email:</label>
+        <input type="email" name="email" required><br><br>
+        
+        <label>Contraseña:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label>Cédula:</label>
+        <input type="text" name="cedula" required><br><br>
+        
+        <label>Turno:</label>
+        <select name="turno">
+            <option value="mañana">Mañana</option>
+            <option value="tarde">Tarde</option>
+            <option value="noche">Noche</option>
+        </select><br><br>
+        
+        <label>Rol:</label>
+        <select name="rol">
+            <option value="empleado">Empleado</option>
+            <option value="admin">Admin</option>
+        </select><br><br>
+        
+        <button type="submit">Registrar</button>
+    </form>
+
+    <a href="/empleado">Volver</a>
+</body>
+</html>
