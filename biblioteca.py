@@ -116,7 +116,7 @@ class Biblioteca:
             self.__prestamos.append(prestamo)
             empleado.agregar_prestamo(prestamo)
             self.__db.insertar_prestamo(prestamo)
-            libro.prestar()
+            self.__db.actualizar_disponibles(libro.get_isbn(), libro.get_disponibles())
         else:
             print("No se ha podido realizar el prestamo")
 
@@ -124,11 +124,10 @@ class Biblioteca:
         return self.__db.buscar_prestamo_activo_isbn(isbn)
     
     def recibir_devolucion(self, empleado, id_prestamo):
+        isbn = self.__db.obtener_isbn_prestamo(id_prestamo)
         self.__db.cerrar_prestamo(id_prestamo, empleado.get_email())
-        libro = self.buscar_libro_db(id_prestamo)
-        if libro:
-            libro.devolver()
-        print(f"Préstamo #{id_prestamo} cerrado por {empleado.get_nombre()} ")
+        self.__db.sumar_disponible(isbn)
+        print(f"Préstamo #{id_prestamo} cerrado ")
 
     def login(self, email, password):
         empleado = self.buscar_empleado_db(email)
@@ -156,16 +155,23 @@ class Biblioteca:
     def obtener_clientes(self):
         return self.__db.obtener_clientes_db()
     
-    
-   
+    def prestamos_activos(self,isbn):
+        prestamos_activos = self.__db.verificar_prestamos_activos_libros(isbn)
 
+        if prestamos_activos:
+            print("No se puede eliminar por que hay prestamos activos")
+        else: 
+            self.__db.eliminar_libro(isbn)
+            print("Libro eliminado")
 
+    def eliminar_libro(self, isbn):
+        prestamos_activos = self.__db.verificar_prestamos_activos_libros(isbn)
 
-
-
-    
-
-            
+        if prestamos_activos:
+            print("No se puede eliminar por que hay prestamos activos")
+        else: 
+            self.__db.eliminar_libro(isbn)
+            print("Libro eliminado")
 
 
 

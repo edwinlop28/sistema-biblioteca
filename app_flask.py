@@ -155,7 +155,27 @@ def ver_clientes():
     
     clientes = biblioteca.obtener_clientes()
     return render_template("ver_clientes.html", clientes = clientes)
+
+@app.route("/libros/eliminar", methods=["GET", "POST"])
+def eliminar_libros():
+    if "email" not in session:
+        return redirect(url_for("login"))
+    
+    if session["rol"] != "admin":
+        return redirect(url_for("dashboard_empleado"))
+    
+    if request.method == "POST":
+        isbn = request.form["isbn"]
+        biblioteca.eliminar_libro(isbn)
+        return redirect(url_for("eliminar_libros"))
+    
+    libros = biblioteca.obtener_libros()
+    return render_template("eliminar_libros.html", libros=libros)
+
+
     
     
 if __name__ == "__main__":
     app.run(debug=True)
+
+

@@ -219,4 +219,56 @@ class Data_Base:
             WHERE estado = 'activo'
         """)
         return self.__cursor.fetchall()
-        
+    
+    def actualizar_disponibles(self, isbn, disponibles):
+        self.__cursor.execute("""
+            UPDATE libros SET disponibles = ?
+            WHERE isbn = ?
+        """, (disponibles, isbn))
+        self.__conexion.commit()
+
+    def sumar_disponible(self, isbn):
+        self.__cursor.execute("""
+            UPDATE libros SET disponibles = disponibles + 1
+            WHERE isbn = ?
+        """, (isbn,))
+        self.__conexion.commit()
+
+    def obtener_isbn_prestamo(self, id_prestamo):
+        self.__cursor.execute(
+            "SELECT isbn_libro FROM prestamos WHERE id = ?",
+            (id_prestamo,)
+        )
+        resultado = self.__cursor.fetchone()
+        return resultado[0] if resultado else None
+    
+    def verificar_prestamos_activos_libros(self,isbn):
+        self.__cursor.execute("""
+            SELECT * FROM prestamos 
+            WHERE isbn_libro = ? AND estado = 'activo'
+        """, (isbn,))
+        return self.__cursor.fetchall()
+    
+    def eliminar_libro(self,isbn):
+        self.__cursor.execute("""
+            DELETE FROM libros WHERE isbn = ?
+        """, (isbn,))
+        self.__conexion.commit()
+        print(f"Libro con ISBN '{isbn}' eliminado de DB ")
+
+
+# ¿Dónde va cada cosa?
+# database.py
+# → verificar_prestamos_activos_libro(isbn)
+# → eliminar_libro(isbn)
+
+# biblioteca.py
+# → eliminar_libro(isbn)
+#   → verifica primero
+#   → si no tiene préstamos → llama eliminar_libro de DB
+
+# app_flask.py
+# → ruta /libros/eliminar
+#   → recibe el ISBN
+#   → llama biblioteca.eliminar_libro(isbn)
+#   → redirige a /libros
