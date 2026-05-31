@@ -18,7 +18,7 @@ class Biblioteca:
     def registrar_empleado(self,empleado):
         self.__empleados.append(empleado)
         self.__db.insertar_empleado(empleado)
-        print(f"Empleado '{empleado.get_nombre()}' registrado")
+        return f"Empleado '{empleado.get_nombre()}' registrado"
     
     def buscar_empleado_db(self, email):
 
@@ -32,7 +32,7 @@ class Biblioteca:
     def registrar_cliente(self,cliente):
         self.__clientes.append(cliente)
         self.__db.insertar_cliente(cliente)
-        print(f"Cliente '{cliente.get_nombre()}' registrado")
+        return f"Cliente '{cliente.get_nombre()}' registrado"
 
     def agregar_libro(self, libro):
         self.__libros.append(libro)
@@ -110,24 +110,33 @@ class Biblioteca:
         cliente = self.buscar_cliente_db(cedula_cliente)
         libro = self.buscar_libro_db(isbn_libro)
 
-        if cliente and libro and libro.esta_disponible():
-            libro.prestar()
-            prestamo = Prestamo(libro,cliente,empleado)
-            self.__prestamos.append(prestamo)
-            empleado.agregar_prestamo(prestamo)
-            self.__db.insertar_prestamo(prestamo)
-            self.__db.actualizar_disponibles(libro.get_isbn(), libro.get_disponibles())
-        else:
-            print("No se ha podido realizar el prestamo")
+        if not cliente:
+            return "Cliente no encontrado "
+        if not libro:
+            return "Libro no encontrado "
+        if not libro.esta_disponible():
+            return "Libro no disponible "
+
+        libro.prestar()
+        prestamo = Prestamo(libro, cliente, empleado)
+        self.__prestamos.append(prestamo)
+        empleado.agregar_prestamo(prestamo)
+        self.__db.insertar_prestamo(prestamo)
+        self.__db.actualizar_disponibles(libro.get_isbn(), libro.get_disponibles())
+        return "Préstamo registrado exitosamente "
 
     def buscar_prestamo_por_isbn(self, isbn):
         return self.__db.buscar_prestamo_activo_isbn(isbn)
     
     def recibir_devolucion(self, empleado, id_prestamo):
         isbn = self.__db.obtener_isbn_prestamo(id_prestamo)
+
+        if not isbn:
+            return "Préstamo no encontrado "
+        
         self.__db.cerrar_prestamo(id_prestamo, empleado.get_email())
         self.__db.sumar_disponible(isbn)
-        print(f"Préstamo #{id_prestamo} cerrado ")
+        return "Devolución registrada exitosamente "
 
     def login(self, email, password):
         empleado = self.buscar_empleado_db(email)
@@ -159,19 +168,19 @@ class Biblioteca:
         prestamos_activos = self.__db.verificar_prestamos_activos_libros(isbn)
 
         if prestamos_activos:
-            print("No se puede eliminar por que hay prestamos activos")
+            return "No se puede eliminar por que hay prestamos activos"
         else: 
             self.__db.eliminar_libro(isbn)
-            print("Libro eliminado")
+            return "Libro eliminado"
 
     def eliminar_libro(self, isbn):
         prestamos_activos = self.__db.verificar_prestamos_activos_libros(isbn)
 
         if prestamos_activos:
-            print("No se puede eliminar por que hay prestamos activos")
+            return "No se puede eliminar por que hay prestamos activos"
         else: 
             self.__db.eliminar_libro(isbn)
-            print("Libro eliminado")
+            return "Libro eliminado"
 
     def obtener_historial_prestamos(self):
         return self.__db.obtener_prestamos()

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from biblioteca import Biblioteca
 from empleado import Empleado
 from cliente import Cliente
@@ -17,28 +17,6 @@ biblioteca.registrar_empleado(admin1)
 
 app = Flask(__name__)
 app.secret_key = "biblioteca123"
-
-@app.route("/empleados/nuevo", methods=["GET", "POST"])
-def empleado_nuevo():
-    if "email" not in session:
-        return redirect(url_for("login"))
-    
-    if session["rol"] != "admin":
-        return redirect(url_for("dashboard_empleado"))
-    
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        email = request.form["email"]
-        password = request.form["password"]
-        cedula = request.form["cedula"]
-        rol = request.form["rol"]
-        turno = request.form["turno"]
-       
-        empleado = Empleado(nombre, cedula, email, password, turno, rol)
-        biblioteca.registrar_empleado(empleado)
-        return redirect(url_for("dashboard_empleado"))
-    
-    return render_template("empleado_nuevo.html")
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -82,6 +60,29 @@ def libros():
     libros = biblioteca.obtener_libros()
     return render_template("libros.html", libros=libros)
 
+@app.route("/empleados/nuevo", methods=["GET", "POST"])
+def empleado_nuevo():
+    if "email" not in session:
+        return redirect(url_for("login"))
+    
+    if session["rol"] != "admin":
+        return redirect(url_for("dashboard_empleado"))
+    
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        email = request.form["email"]
+        password = request.form["password"]
+        cedula = request.form["cedula"]
+        rol = request.form["rol"]
+        turno = request.form["turno"]
+       
+        empleado = Empleado(nombre, cedula, email, password, turno, rol)
+        resultado = biblioteca.registrar_empleado(empleado)
+        flash(resultado, "success" if "registrado" in resultado else "danger")
+        return redirect(url_for("dashboard_empleado"))
+    
+    return render_template("empleado_nuevo.html")
+
 @app.route("/clientes/nuevo", methods=["GET", "POST"])
 def cliente_nuevo():
     if "email" not in session:
@@ -94,8 +95,9 @@ def cliente_nuevo():
         telefono = request.form["telefono"]
         direccion = request.form["direccion"]
         cliente = Cliente(nombre, cedula, email, telefono, direccion)
-        biblioteca.registrar_cliente(cliente)
-        return redirect((url_for("dashboard_empleado")))
+        resultado = biblioteca.registrar_cliente(cliente)
+        flash(resultado, "success" if "registrado" in resultado else "danger")
+        return redirect(url_for("dashboard_empleado"))
     
     return render_template("cliente_nuevo.html")
 
@@ -113,8 +115,9 @@ def prestamo():
         email_empleado = session["email"]
         empleado = biblioteca.buscar_empleado_db(email_empleado)
 
-        biblioteca.hacer_prestamo(empleado, cedula_cliente, isbn_libro)
-        return redirect(url_for("dashboard_empleado"))
+        resultado = biblioteca.hacer_prestamo(empleado, cedula_cliente, isbn_libro)
+        flash(resultado, "success" if "exitosamente" in resultado else "danger")
+        return redirect(url_for("prestamo"))
     
     return render_template("prestamo.html", isbn=isbn)
 
@@ -130,13 +133,17 @@ def devolucion():
         if "isbn" in request.form:
             isbn = request.form["isbn"]
             prestamo = biblioteca.buscar_prestamo_por_isbn(isbn)
-            return render_template("devolucion.html", prestamo=prestamo)
-        
+
+            if not prestamo:
+                flash("No se encontró préstamo activo con ese ISBN ", "danger")
+                return redirect(url_for("devolucion"))
+            
         elif "id_prestamo" in request.form: 
             id_prestamo = request.form["id_prestamo"]
             email_empleado = session["email"]
             empleado = biblioteca.buscar_empleado_db(email_empleado)
-            biblioteca.recibir_devolucion(empleado, id_prestamo)
+            resultado = biblioteca.recibir_devolucion(empleado, id_prestamo)
+            flash(resultado, "success" if "exitosamente" in resultado else "danger")
             return redirect(url_for("dashboard_empleado"))
     
     return render_template("devolucion.html", prestamo=None)
@@ -168,8 +175,10 @@ def eliminar_libros():
     
     if request.method == "POST":
         isbn = request.form["isbn"]
-        biblioteca.eliminar_libro(isbn)
+        resultado = biblioteca.eliminar_libro(isbn)
+        flash(resultado, "success" if "eliminado" in resultado else "danger")
         return redirect(url_for("eliminar_libros"))
+
     
     libros = biblioteca.obtener_libros()
     return render_template("eliminar_libros.html", libros=libros)
