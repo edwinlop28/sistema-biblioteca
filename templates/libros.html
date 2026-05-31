@@ -1,33 +1,110 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Libros</title>
-</head>
-<body>
-    <h1>📚 Catálogo de Libros</h1>
-    
-    <table border="1">
-        <tr>
-            <th>ISBN</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Editorial</th>
-            <th>Año</th>
-            <th>Disponibles</th>
-        </tr>
-        {% for libro in libros %}
-        <tr>
-            <td>{{ libro[0] }}</td>
-            <td>{{ libro[1] }}</td>
-            <td>{{ libro[2] }}</td>
-            <td>{{ libro[3] }}</td>
-            <td>{{ libro[4] }}</td>
-            <td>{{ libro[6] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+{% extends "base.html" %}
 
-    <a href="/empleado">Volver</a>
-</body>
-</html>
+{% block title %}Catálogo de Libros - BiblioSystem{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold">Catálogo de Libros</h4>
+        <p class="text-muted">Todos los libros disponibles en la biblioteca</p>
+    </div>
+    <a href="/empleado" class="btn btn-biblioteca">
+        <i class="fas fa-arrow-left me-2"></i>Volver
+    </a>
+</div>
+
+<div class="row g-4">
+    {% for libro in libros %}
+    <div class="col-md-2">
+        <div class="card h-100" 
+             style="cursor:pointer;"
+             data-bs-toggle="modal" 
+             data-bs-target="#modalLibro"
+             data-isbn="{{ libro[0] }}"
+             data-titulo="{{ libro[1] }}"
+             data-autor="{{ libro[2] }}"
+             data-editorial="{{ libro[3] }}"
+             data-año="{{ libro[4] }}"
+             data-disponibles="{{ libro[6] }}">
+            <img src="https://covers.openlibrary.org/b/isbn/{{ libro[0] }}-M.jpg"
+                 class="card-img-top"
+                 style="height: 200px; object-fit: cover;"
+                 onerror="this.src='https://books.google.com/books/content?vid=ISBN{{ libro[0] }}&printsec=frontcover&img=1&zoom=1'; this.onerror=null;">
+            <div class="card-body p-2 text-center">
+                <small class="fw-bold" style="font-size:0.75rem;">{{ libro[1][:30] }}...</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalLibro" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--verde-oscuro);">
+                <h5 class="modal-title text-white" id="modalTitulo"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <img id="modalPortada" src="" class="img-fluid rounded shadow" style="max-height: 280px;">
+                    </div>
+                    <div class="col-md-8">
+                        <h5 id="modalTituloInfo" class="fw-bold mb-3"></h5>
+                        <p><i class="fas fa-user me-2 text-muted"></i><strong>Autor:</strong> <span id="modalAutor"></span></p>
+                        <p><i class="fas fa-building me-2 text-muted"></i><strong>Editorial:</strong> <span id="modalEditorial"></span></p>
+                        <p><i class="fas fa-calendar me-2 text-muted"></i><strong>Año:</strong> <span id="modalAño"></span></p>
+                        <p><i class="fas fa-barcode me-2 text-muted"></i><strong>ISBN:</strong> <span id="modalIsbn"></span></p>
+                        <div id="modalDisponibles"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <a id="btnPrestar" href="#" class="btn btn-biblioteca">
+                    <i class="fas fa-book me-2"></i>Prestar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    const modal = document.getElementById('modalLibro')
+    modal.addEventListener('show.bs.modal', event => {
+        const card = event.relatedTarget
+        const isbn = card.getAttribute('data-isbn')
+        const titulo = card.getAttribute('data-titulo')
+        const autor = card.getAttribute('data-autor')
+        const editorial = card.getAttribute('data-editorial')
+        const año = card.getAttribute('data-año')
+        const disponibles = card.getAttribute('data-disponibles')
+
+        document.getElementById('modalTitulo').textContent = titulo
+        document.getElementById('modalTituloInfo').textContent = titulo
+        document.getElementById('modalAutor').textContent = autor
+        document.getElementById('modalEditorial').textContent = editorial
+        document.getElementById('modalAño').textContent = año
+        document.getElementById('modalIsbn').textContent = isbn
+        
+        const portada = document.getElementById('modalPortada')
+        portada.src = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+        portada.onerror = function() {
+            this.src = `https://books.google.com/books/content?vid=ISBN${isbn}&printsec=frontcover&img=1&zoom=1`
+        }
+
+        const dispEl = document.getElementById('modalDisponibles')
+        if (disponibles > 0) {
+            dispEl.innerHTML = `<span class="badge bg-success fs-6"><i class="fas fa-check me-1"></i>${disponibles} disponibles</span>`
+        } else {
+            dispEl.innerHTML = `<span class="badge bg-danger fs-6"><i class="fas fa-times me-1"></i>No disponible</span>`
+        }
+
+        document.getElementById('btnPrestar').href = `/prestamo?isbn=${isbn}`
+    })
+</script>
+{% endblock %}
+{% endblock %}

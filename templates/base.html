@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BiblioSystem{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-oscuro: #2d6a4f;
+            --verde-medio: #40916c;
+            --verde-claro: #52b788;
+            --fondo: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--fondo);
+            font-family: 'Segoe UI', sans-serif;
+            color: #333333;
+        }
+
+        .navbar {
+            background-color: var(--verde-oscuro) !important;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: white !important;
+            letter-spacing: 1px;
+        }
+
+        .btn-biblioteca {
+            background-color: var(--verde-medio);
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .btn-biblioteca:hover {
+            background-color: var(--verde-oscuro);
+            color: white;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .icono-card {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        footer {
+            background-color: var(--verde-oscuro);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+            font-size: 0.85rem;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-4 py-3">
+    <a class="navbar-brand" href="/empleado">
+        <i class="fas fa-book-open me-2"></i>BiblioSystem
+    </a>
+    {% if session.get("nombre") %}
+    <div class="d-flex align-items-center gap-3">
+        <span class="text-white">
+            <i class="fas fa-user-circle me-1"></i>{{ session["nombre"] }}
+        </span>
+        <a href="/logout" class="btn btn-outline-light btn-sm">
+            <i class="fas fa-sign-out-alt me-1"></i>Cerrar sesión
+        </a>
+    </div>
+    {% endif %}
+</nav>
+
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+    <small>&copy; 2026 BiblioSystem — Sistema de Administración de Biblioteca</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -105,6 +105,8 @@ def prestamo():
     if "email" not in session:
         return redirect(url_for("login"))
     
+    isbn = request.args.get("isbn", "")
+    
     if request.method =="POST":
         cedula_cliente = request.form["cedula_cliente"]
         isbn_libro = request.form["isbn_libro"]
@@ -114,7 +116,7 @@ def prestamo():
         biblioteca.hacer_prestamo(empleado, cedula_cliente, isbn_libro)
         return redirect(url_for("dashboard_empleado"))
     
-    return render_template("prestamo.html")
+    return render_template("prestamo.html", isbn=isbn)
 
 @app.route("/devolucion", methods=["GET", "POST"])
 def devolucion():

@@ -1,27 +1,146 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Empleado</title>
-</head>
-<body>
-    <h1>📚 Bienvenido {{ nombre }}</h1>
-    <h3>Panel Empleado</h3>
-    
-    <ul>
-        <li><a href="/prestamo">Registrar préstamo</a></li>
-       <li><a href="/devolucion">Registrar devolución</a></li>
-        <li><a href="/libros">Ver libros</a></li>
-        <a href="/prestamos/activos">Ver préstamos activos</a>
-        <li><a href="/clientes/nuevo">Registrar cliente</a></li>
-        <li><a href="/ver/clientes">Ver clientes</a></li>
-        {% if session["rol"] == "admin" %}
-        <li><a href="/empleados/nuevo">Registrar empleado</a></li>
-        <li><a href="/libros/eliminar">Eliminar libro</a></li>
-        <li><a href="/libros/nuevo">Agregar libro</a></li>
-        {% endif %}
-    </ul>
-    
-    <a href="/logout">Cerrar sesión</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Dashboard - BiblioSystem{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h4 class="fw-bold">Panel de Control</h4>
+    <p class="text-muted">Gestiona los recursos de la biblioteca</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <a href="/prestamo" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-success">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Registrar Préstamo</h6>
+                        <small class="text-muted">Prestar un libro</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/devolucion" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-warning">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Registrar Devolución</h6>
+                        <small class="text-muted">Recibir un libro</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/libros" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-primary">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Ver Libros</h6>
+                        <small class="text-muted">Catálogo completo</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/prestamos/activos" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-info">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Préstamos Activos</h6>
+                        <small class="text-muted">Ver préstamos vigentes</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/clientes/nuevo" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-secondary">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Registrar Cliente</h6>
+                        <small class="text-muted">Nuevo cliente</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/ver/clientes" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-secondary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Ver Clientes</h6>
+                        <small class="text-muted">Lista de clientes</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    {% if session["rol"] == "admin" %}
+    <div class="col-12 mt-2">
+        <h5 class="text-muted">
+            <i class="fas fa-cog me-2"></i>Administración
+        </h5>
+    </div>
+    <div class="col-md-4">
+        <a href="/empleados/nuevo" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-dark">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Registrar Empleado</h6>
+                        <small class="text-muted">Nuevo empleado</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="/libros/eliminar" class="text-decoration-none">
+            <div class="card">
+                <div class="card-body p-4 d-flex align-items-center gap-3">
+                    <div class="icono-card bg-danger">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Eliminar Libro</h6>
+                        <small class="text-muted">Dar de baja un libro</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

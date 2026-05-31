@@ -1,22 +1,49 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Registrar Préstamo</title>
-</head>
-<body>
-    <h1>📖 Registrar Préstamo</h1>
+{% extends "base.html" %}
 
-    <form method="POST">
-        <label>Cédula del cliente:</label>
-        <input type="text" name="cedula_cliente" required><br><br>
-        
-        <label>ISBN o Título del libro:</label>
-        <input type="text" name="isbn_libro" required><br><br>
-        
-        <button type="submit">Registrar Préstamo</button>
-    </form>
+{% block title %}Registrar Préstamo - BiblioSystem{% endblock %}
 
-    <a href="/empleado">Volver</a>
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header" style="background-color: var(--verde-oscuro);">
+                <h5 class="text-white mb-0">
+                    <i class="fas fa-book me-2"></i>Registrar Préstamo
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Cédula del Cliente</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-id-card"></i>
+                            </span>
+                            <input type="text" name="cedula_cliente" class="form-control" placeholder="Ingresa la cédula" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">ISBN o Título del Libro</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-barcode"></i>
+                            </span>
+                            <input type="text" name="isbn_libro" class="form-control" value="{{ isbn }}" placeholder="ISBN o título" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-biblioteca">
+                            <i class="fas fa-check me-2"></i>Registrar Préstamo
+                        </button>
+                        <a href="/empleado" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
