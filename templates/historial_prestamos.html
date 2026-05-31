@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Préstamos Activos - BiblioSystem{% endblock %}
+{% block title %}Historial de Préstamos - BiblioSystem{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="fw-bold">Préstamos Activos</h4>
-        <p class="text-muted">Lista de todos los préstamos vigentes</p>
+        <h4 class="fw-bold">Historial de Préstamos</h4>
+        <p class="text-muted">Todos los préstamos registrados</p>
     </div>
     <a href="/empleado" class="btn btn-biblioteca">
         <i class="fas fa-arrow-left me-2"></i>Volver
@@ -19,11 +19,14 @@
             <thead style="background-color: var(--verde-oscuro); color: white;">
                 <tr>
                     <th>ID</th>
-                    <th>Libro</th>
+                    <th>Libro (ISBN)</th>
                     <th>Cliente</th>
                     <th>Prestado por</th>
+                    <th>Recibido por</th>
                     <th>Fecha préstamo</th>
-                    <th>Vence</th>
+                    <th>Fecha Vencimiento</th>
+                    <th>Fecha Devolución</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,8 +36,15 @@
                     <td>{{ prestamo[1] }}</td>
                     <td>{{ prestamo[2] }}</td>
                     <td>{{ prestamo[3] }}</td>
+                    <td>{{ prestamo[4] if prestamo[4] else "Pendiente" }}</td>
                     <td>{{ prestamo[5] }}</td>
                     <td>{{ prestamo[6] }}</td>
+                    <td>{{ prestamo[7] if prestamo[7] else "Pendiente" }}</td>
+                    <td>
+                        <span class="badge {% if prestamo[8] == 'activo' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ prestamo[8] }}
+                        </span>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

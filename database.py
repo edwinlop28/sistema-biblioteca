@@ -196,7 +196,20 @@ class Data_Base:
             SELECT * FROM prestamos 
             WHERE isbn_libro = ? AND estado = 'activo'
         """, (isbn,))
-        return self.__cursor.fetchone()
+        prestamo = self.__cursor.fetchone()
+        
+        if prestamo:
+            self.__cursor.execute("SELECT titulo FROM libros WHERE isbn = ?", (isbn,))
+            titulo = self.__cursor.fetchone()[0]
+
+            self.__cursor.execute("SELECT nombre FROM clientes WHERE cedula = ?", (prestamo[2],))
+            cliente = self.__cursor.fetchone()[0]
+            
+            self.__cursor.execute("SELECT nombre FROM empleados WHERE email = ?", (prestamo[3],))
+            empleado = self.__cursor.fetchone()[0]
+            
+            return (prestamo[0], titulo, cliente, empleado, prestamo[4], prestamo[5], prestamo[6])
+        return None
     
     def cerrar_prestamo(self, id_prestamo, email_empleado):
         from datetime import datetime
@@ -257,18 +270,5 @@ class Data_Base:
         print(f"Libro con ISBN '{isbn}' eliminado de DB ")
 
 
-# ¿Dónde va cada cosa?
-# database.py
-# → verificar_prestamos_activos_libro(isbn)
-# → eliminar_libro(isbn)
 
-# biblioteca.py
-# → eliminar_libro(isbn)
-#   → verifica primero
-#   → si no tiene préstamos → llama eliminar_libro de DB
 
-# app_flask.py
-# → ruta /libros/eliminar
-#   → recibe el ISBN
-#   → llama biblioteca.eliminar_libro(isbn)
-#   → redirige a /libros

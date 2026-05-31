@@ -174,7 +174,12 @@ def eliminar_libros():
     libros = biblioteca.obtener_libros()
     return render_template("eliminar_libros.html", libros=libros)
 
-
+@app.route("/prestamos/historial")
+def historial_prestamos():
+    if "email" not in session:
+        return redirect(url_for("login"))
+    prestamos = biblioteca.obtener_historial_prestamos()
+    return render_template("historial_prestamos.html", prestamos=prestamos)
     
     
 if __name__ == "__main__":

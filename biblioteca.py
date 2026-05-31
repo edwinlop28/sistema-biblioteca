@@ -173,6 +173,9 @@ class Biblioteca:
             self.__db.eliminar_libro(isbn)
             print("Libro eliminado")
 
+    def obtener_historial_prestamos(self):
+        return self.__db.obtener_prestamos()
+
 
 
     
