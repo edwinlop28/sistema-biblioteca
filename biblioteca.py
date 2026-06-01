@@ -3,6 +3,7 @@ from database import Data_Base
 from prestamo import Prestamo
 from libro import Libro
 from empleado import Empleado
+
 class Biblioteca:
     __empleados:list
     __clientes: list
@@ -138,11 +139,12 @@ class Biblioteca:
         self.__db.cerrar_prestamo(id_prestamo, empleado.get_email())
         self.__db.sumar_disponible(isbn)
         return "Devolución registrada exitosamente "
-
-    def login(self, email, password):
-        empleado = self.buscar_empleado_db(email)
-        if empleado and empleado.login(email, password):
-            return empleado
+    
+    def login(self, email, password, bcrypt):
+        emp = self.__db.buscar_empleado_email(email)
+        if emp:
+            if bcrypt.check_password_hash(emp[4], password):
+                return Empleado(emp[1], emp[2], emp[3], emp[4], emp[5], emp[6])
         return None
     
     def obtener_libros(self):

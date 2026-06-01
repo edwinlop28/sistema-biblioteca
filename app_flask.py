@@ -4,6 +4,12 @@ from empleado import Empleado
 from cliente import Cliente
 from empleado import Empleado
 from cliente import Cliente
+from flask_bcrypt import Bcrypt
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
+app.secret_key = "biblioteca123"
+
 biblioteca = Biblioteca() 
 
 if not biblioteca.hay_libros():
@@ -11,11 +17,9 @@ if not biblioteca.hay_libros():
 else:
     biblioteca.cargar_libros_db()
 
-admin1 = Empleado("Ana García","1065880632", "ana@mail.com", "1234", "mañana", "admin")
+password_admin = bcrypt.generate_password_hash("200728").decode("utf-8")
+admin1 = Empleado("Edwin López","1065880632", "edwin@mail.com", password_admin, "mañana", "admin")
 biblioteca.registrar_empleado(admin1)
-
-app = Flask(__name__)
-app.secret_key = "biblioteca123"
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -23,7 +27,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        usuario = biblioteca.login(email,password)
+        usuario = biblioteca.login(email, password, bcrypt)
 
         if usuario:
             session["email"]  = usuario.get_email()
@@ -70,7 +74,7 @@ def empleado_nuevo():
     if request.method == "POST":
         nombre = request.form["nombre"]
         email = request.form["email"]
-        password = request.form["password"]
+        password = bcrypt.generate_password_hash(request.form["password"]).decode("utf-8")
         cedula = request.form["cedula"]
         rol = request.form["rol"]
         turno = request.form["turno"]
