@@ -17,9 +17,10 @@ class Biblioteca:
     
     def registrar_empleado(self,empleado):
         self.__empleados.append(empleado)
-        self.__db.insertar_empleado(empleado)
-        return f"Empleado '{empleado.get_nombre()}' registrado"
-    
+        if self.__db.insertar_empleado(empleado):
+            return f"Empleado '{empleado.get_nombre()}' registrado"
+        return f"Error: El email '{empleado.get_email()}' ya está registrado"
+
     def buscar_empleado_db(self, email):
 
         empleado = self.__db.buscar_empleado_email(email)

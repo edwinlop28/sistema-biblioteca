@@ -1,7 +1,4 @@
-from abc import ABC, abstractmethod
-from datetime import datetime
-
-class Persona(ABC):
+class Persona():
     _id_contador: int = 1
     
     def __init__(self, nombre: str = "", email: str = "", cedula: str = ""):

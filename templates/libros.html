@@ -27,10 +27,9 @@
              data-año="{{ libro[4] }}"
              data-disponibles="{{ libro[6] }}">
             <img src="https://covers.openlibrary.org/b/isbn/{{ libro[0] }}-M.jpg"
-                 class="card-img-top"
-                 style="height: 200px; object-fit: cover;"
-                 onerror="this.src='https://books.google.com/books/content?vid=ISBN{{ libro[0] }}&printsec=frontcover&img=1&zoom=1'; this.onerror=null;">
-            <div class="card-body p-2 text-center">
+                class="card-img-top"
+                style="height: 200px; object-fit: cover;"
+                onerror="this.onerror=function(){this.src='/static/images/noImagen.jpg'}; this.src='/static/images/noImagen.jpg'"><div class="card-body p-2 text-center">
                 <small class="fw-bold" style="font-size:0.75rem;">{{ libro[1][:30] }}...</small>
             </div>
         </div>

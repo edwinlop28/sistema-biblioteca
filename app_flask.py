@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from biblioteca import Biblioteca
 from empleado import Empleado
 from cliente import Cliente
-from libro import Libro
 from empleado import Empleado
 from cliente import Cliente
 biblioteca = Biblioteca() 

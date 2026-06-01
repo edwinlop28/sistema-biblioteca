@@ -17,7 +17,7 @@ class Data_Base:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT,
             cedula TEXT,
-            email TEXT,
+            email TEXT UNIQUE,
             password TEXT,
             turno TEXT,
             rol TEXT,
@@ -30,7 +30,7 @@ class Data_Base:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT,
             cedula TEXT,
-            email TEXT,
+            email TEXT UNIQUE,
             telefono TEXT,
             direccion TEXT,
             activo INTEGER DEFAULT 1
@@ -86,9 +86,9 @@ class Data_Base:
                 empleado.get_rol()
             ))
             self.__conexion.commit()
-            print(f"Empleado '{empleado.get_nombre()}' guardado en DB ")
-        else:
-            print(f"Empleado '{empleado.get_nombre()}' ya existe ")
+            return True
+
+        return False
 
     def insertar_cliente(self,cliente):
         self.__cursor.execute("""
