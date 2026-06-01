@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-
 class Persona(ABC):
     _id_contador: int = 1
     
