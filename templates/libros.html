@@ -14,29 +14,33 @@
 </div>
 
 <div class="row g-4">
-    {% for libro in libros %}
-    <div class="col-md-2">
-        <div class="card h-100" 
-             style="cursor:pointer;"
-             data-bs-toggle="modal" 
-             data-bs-target="#modalLibro"
-             data-isbn="{{ libro[0] }}"
-             data-titulo="{{ libro[1] }}"
-             data-autor="{{ libro[2] }}"
-             data-editorial="{{ libro[3] }}"
-             data-año="{{ libro[4] }}"
-             data-disponibles="{{ libro[6] }}">
-            <img src="https://covers.openlibrary.org/b/isbn/{{ libro[0] }}-M.jpg"
-                class="card-img-top"
-                style="height: 200px; object-fit: cover;"
-                onload="if(this.naturalWidth <= 1) this.src='/static/images/noImagen.jpg'"
-                onerror="this.onerror=null; this.src='/static/images/noImage.jpg'">
-            <div class="card-body p-2 text-center">
-                <small class="fw-bold" style="font-size:0.75rem;">{{ libro[1][:30] }}...</small>
+    {% if libros %}
+        {% for libro in libros %}
+        <div class="col-md-2">
+            <div class="card h-100" 
+                style="cursor:pointer;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalLibro"
+                data-isbn="{{ libro[0] }}"
+                data-titulo="{{ libro[1] }}"
+                data-autor="{{ libro[2] }}"
+                data-editorial="{{ libro[3] }}"
+                data-año="{{ libro[4] }}"
+                data-disponibles="{{ libro[6] }}">
+                <img src="https://covers.openlibrary.org/b/isbn/{{ libro[0] }}-M.jpg"
+                    class="card-img-top"
+                    style="height: 200px; object-fit: cover;"
+                    onload="if(this.naturalWidth <= 1) this.src='/static/images/noImagen.jpg'"
+                    onerror="this.onerror=null; this.src='/static/images/noImage.jpg'">
+                <div class="card-body p-2 text-center">
+                    <small class="fw-bold" style="font-size:0.75rem;">{{ libro[1][:30] }}...</small>
+                </div>
             </div>
         </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="text-center text-muted">No hay libros en el catálogo</p>
+    {% endif %}
 </div>
 
 <!-- Modal -->

@@ -233,11 +233,11 @@ class Data_Base:
         """)
         return self.__cursor.fetchall()
     
-    def actualizar_disponibles(self, isbn, disponibles):
+    def restar_disponible(self, isbn):
         self.__cursor.execute("""
-            UPDATE libros SET disponibles = ?
+            UPDATE libros SET disponibles = disponibles - 1
             WHERE isbn = ?
-        """, (disponibles, isbn))
+        """, (isbn,))
         self.__conexion.commit()
 
     def sumar_disponible(self, isbn):

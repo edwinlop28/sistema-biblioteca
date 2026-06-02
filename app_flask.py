@@ -149,7 +149,7 @@ def devolucion():
             flash(resultado, "success" if "exitosamente" in resultado else "danger")
             return redirect(url_for("dashboard_empleado"))
     
-    return render_template("devolucion.html", prestamo=None)
+    return render_template("devolucion.html", prestamo=prestamo)
 
 @app.route("/prestamos/activos")
 def prestamos_activos():
@@ -195,6 +195,6 @@ def historial_prestamos():
     
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
 
 

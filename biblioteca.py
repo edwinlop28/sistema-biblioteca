@@ -51,7 +51,7 @@ class Biblioteca:
     def buscar_libro_db(self, criterio):
         lib = self.__db.buscar_libro_criterio(criterio)
         if lib:
-            return Libro(lib[0], lib[1], lib[2], lib[3], lib[4], lib[5])
+            return Libro(lib[0], lib[1], lib[2], lib[3], lib[4], lib[6])
         return None
     
     def buscar_en_api(self, isbn):
@@ -111,6 +111,7 @@ class Biblioteca:
     def hacer_prestamo(self, empleado, cedula_cliente, isbn_libro):
         cliente = self.buscar_cliente_db(cedula_cliente)
         libro = self.buscar_libro_db(isbn_libro)
+        print(f"Disponibles antes: {libro.get_disponibles()}") 
 
         if not cliente:
             return "Cliente no encontrado "
@@ -120,11 +121,13 @@ class Biblioteca:
             return "Libro no disponible "
 
         libro.prestar()
+        print(f"Disponibles después: {libro.get_disponibles()}") 
         prestamo = Prestamo(libro, cliente, empleado)
         self.__prestamos.append(prestamo)
         empleado.agregar_prestamo(prestamo)
         self.__db.insertar_prestamo(prestamo)
-        self.__db.actualizar_disponibles(libro.get_isbn(), libro.get_disponibles())
+        self.__db.restar_disponible(libro.get_isbn())
+        print(f"Guardado en DB: {libro.get_disponibles()}")
         return "Préstamo registrado exitosamente "
 
     def buscar_prestamo_por_isbn(self, isbn):

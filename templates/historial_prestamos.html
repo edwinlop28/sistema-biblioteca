@@ -30,23 +30,31 @@
                 </tr>
             </thead>
             <tbody>
-                {% for prestamo in prestamos %}
-                <tr>
-                    <td>{{ prestamo[0] }}</td>
-                    <td>{{ prestamo[1] }}</td>
-                    <td>{{ prestamo[2] }}</td>
-                    <td>{{ prestamo[3] }}</td>
-                    <td>{{ prestamo[4] if prestamo[4] else "Pendiente" }}</td>
-                    <td>{{ prestamo[5] }}</td>
-                    <td>{{ prestamo[6] }}</td>
-                    <td>{{ prestamo[7] if prestamo[7] else "Pendiente" }}</td>
-                    <td>
-                        <span class="badge {% if prestamo[8] == 'activo' %}bg-success{% else %}bg-secondary{% endif %}">
-                            {{ prestamo[8] }}
-                        </span>
-                    </td>
-                </tr>
-                {% endfor %}
+                {% if prestamos %}
+                    {% for prestamo in prestamos %}
+                        <tr>
+                            <td>{{ prestamo[0] }}</td>
+                            <td>{{ prestamo[1] }}</td>
+                            <td>{{ prestamo[2] }}</td>
+                            <td>{{ prestamo[3] }}</td>
+                            <td>{{ prestamo[4] if prestamo[4] else "Pendiente" }}</td>
+                            <td>{{ prestamo[5] }}</td>
+                            <td>{{ prestamo[6] }}</td>
+                            <td>{{ prestamo[7] if prestamo[7] else "Pendiente" }}</td>
+                            <td>
+                                <span class="badge {% if prestamo[8] == 'activo' %}bg-success{% else %}bg-secondary{% endif %}">
+                                    {{ prestamo[8] }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            <i class="fas fa-history me-2"></i>No hay préstamos registrados
+                        </td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
