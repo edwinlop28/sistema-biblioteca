@@ -120,7 +120,7 @@ def prestamo():
 
         resultado = biblioteca.hacer_prestamo(empleado, cedula_cliente, isbn_libro)
         flash(resultado, "success" if "exitosamente" in resultado else "danger")
-        return redirect(url_for("prestamo"))
+        return redirect(url_for("dashboard_empleado"))
     
     return render_template("prestamo.html", isbn=isbn)
 
