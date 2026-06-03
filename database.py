@@ -1,6 +1,8 @@
 import sqlite3
 from cliente import Cliente
-from empleado import Empleado
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 class Data_Base:
     __conexion: sqlite3.Connection
@@ -10,6 +12,7 @@ class Data_Base:
         self.__conexion = sqlite3.connect("biblioteca.db", check_same_thread=False)
         self.__cursor =  self.__conexion.cursor()
         self.__crear_tablas()
+        self.crear_admin_inicial()
 
     def __crear_tablas(self):
         self.__cursor.execute("""
@@ -65,6 +68,23 @@ class Data_Base:
 
         self.__conexion.commit()
         print("Tablas creadas ")
+
+    def crear_admin_inicial(self):
+        self.__cursor.execute(
+            "SELECT * FROM empleados WHERE rol = ?",
+            ("admin",)
+        )
+        password_admin = bcrypt.generate_password_hash("200728").decode("utf-8")
+
+        if self.__cursor.fetchone() is None:
+            self.__cursor.execute(
+                """INSERT INTO empleados 
+                (nombre, cedula, email, password, turno, rol) VALUES (?, ?, ?, ?, ?, ?)""",
+
+                ("Edwin López","1065880632","edwin@mail.com",password_admin,"mañana","admin")
+            )
+
+            self.__conexion.commit()
 
     def insertar_empleado(self, empleado):
         self.__cursor.execute(

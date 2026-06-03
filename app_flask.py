@@ -4,11 +4,10 @@ from empleado import Empleado
 from cliente import Cliente
 from empleado import Empleado
 from cliente import Cliente
-from flask_bcrypt import Bcrypt
+
 from  libro import Libro
 
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
 app.secret_key = "biblioteca123"
 
 biblioteca = Biblioteca() 
@@ -18,17 +17,13 @@ if not biblioteca.hay_libros():
 else:
     biblioteca.cargar_libros_db()
 
-password_admin = bcrypt.generate_password_hash("200728").decode("utf-8")
-admin1 = Empleado("Edwin López","1065880632", "edwin@mail.com", password_admin, "mañana", "admin") # el admin no se debe crear aqui
-biblioteca.registrar_empleado(admin1)
-
 @app.route("/", methods=["GET", "POST"])
 def login():
      
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        usuario = biblioteca.login(email, password, bcrypt)
+        usuario = biblioteca.login(email, password)
 
         if usuario:
             session["email"]  = usuario.get_email()
@@ -213,7 +208,6 @@ def nuevo_libro():
 
         if libro_buscar:
             biblioteca.agregar_libro(libro_buscar)
-
             return(redirect(url_for("crear_libro")))   
         else:
             titulo = request.form["titulo"]
