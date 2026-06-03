@@ -203,25 +203,21 @@ def nuevo_libro():
         resultado = biblioteca.existe_libro_db(isbn)
 
         if resultado:
-            flash("Este ISBN ya existe", "danger")
-            return redirect(url_for("nuevo_libro"))
+            return render_template("libro_nuevo.html", libro = None,isbn = isbn, mostrar_formulario = False, error="El libro ya existe")
         
         libro_buscar = biblioteca.buscar_libro_db(isbn)
 
         if libro_buscar:
-            biblioteca.agregar_libro(libro_buscar)
-            return(redirect(url_for("crear_libro")))   
+            return render_template("libro_nuevo.html", libro = libro_buscar , mostrar_formulario = True)
         else:
-            titulo = request.form["titulo"]
-            autor = request.form["autor"]   
-            editorial = request.form["editorial"]
-            año_publicacion = request.form["año_publicacion"]
-            cantidad = request.form["cantidad"]
-            libro_nuevo = Libro(isbn, titulo, autor, editorial, año_publicacion,cantidad)
-            biblioteca.agregar_libro(libro_nuevo)
-            flash("Libro agregado exitosamente", "success")
-            return redirect(url_for("dashboard_empleado"))
-    return render_template("libro_nuevo.html")
+            return render_template("libro_nuevo.html",libro = None,isbn = isbn, mostrar_formulario = False)
+        
+    return render_template("buscar_libro.html")
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=False,port=3000)
