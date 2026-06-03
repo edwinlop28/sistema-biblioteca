@@ -204,7 +204,7 @@ def nuevo_libro():
 
         if resultado:
             flash("Este libro ya existe en la base de datos", "danger")
-            return render_template("libro_nuevo.html", libro = None,isbn = isbn, mostrar_formulario = False)
+            return redirect(url_for("nuevo_libro"))
         
         libro_buscar = biblioteca.buscar_libro_db(isbn)
 
