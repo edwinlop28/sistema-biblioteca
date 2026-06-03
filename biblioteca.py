@@ -192,7 +192,7 @@ class Biblioteca:
         return self.__db.obtener_prestamos()
 
     def existe_libro_db(self,isbn):
-        self.__db.exites_libro(isbn)
+        self.__db.existe_libro(isbn)
 
 
     

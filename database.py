@@ -289,18 +289,14 @@ class Data_Base:
         self.__conexion.commit()
         print(f"Libro con ISBN '{isbn}' eliminado de DB ")
 
-    def exites_libro(self,isbn):
+    def existe_libro(self,isbn):
         self.__cursor.execute(
             "SELECT 1 FROM libros WHERE isbn = ?",
             (isbn,)
         )
-
         resultado = self.__cursor.fetchone()
 
-        if resultado:
-            return True
-        
-        return False
+        return resultado is not None
 
 
 
