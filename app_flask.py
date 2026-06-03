@@ -192,29 +192,37 @@ def historial_prestamos():
 
 @app.route("/libros/nuevo", methods=["GET", "POST"])
 def nuevo_libro():
+
     if "email" not in session:
         return redirect(url_for("login"))
-        
+    
     if session["rol"] != "admin":
         return redirect(url_for("dashboard_empleado"))
 
     if request.method == "POST":
-        isbn = request.form["isbn"]
-        resultado = biblioteca.existe_libro_db(isbn)
 
-        if resultado:
+        isbn = request.form["isbn"]
+
+        if biblioteca.existe_libro_db(isbn):
             flash("Este libro ya existe en la base de datos", "danger")
             return redirect(url_for("nuevo_libro"))
         
-        libro_buscar = biblioteca.buscar_libro_db(isbn)
+        if "titulo" in request.form and request.form["titulo"]:
 
-        if libro_buscar:
-            return render_template("libro_nuevo.html", libro = libro_buscar , mostrar_formulario = True)
-        else:
-            return render_template("libro_nuevo.html",libro = None,isbn = isbn, mostrar_formulario = True)
+            libro = Libro(isbn,request.form["titulo"],request.form["autor"],request.form["editorial"],request.form["año_publicacion"],int(request.form["cantidad"]))
+            biblioteca.agregar_libro(libro)
+            flash("Libro agregado exitosamente", "success")
+            return redirect(url_for("dashboard_empleado"))
         
-    return render_template("libro_nuevo.html")
-
+        resultado_api = biblioteca.buscar_en_api(isbn)
+        if resultado_api:
+            titulo, autor, editorial, año = resultado_api
+            libro = Libro(isbn, titulo, autor, editorial, año, 0)
+            return render_template("libro_nuevo.html", libro=libro, mostrar_formulario=True)
+        else:
+            return render_template("libro_nuevo.html", libro=None, isbn=isbn, mostrar_formulario=True)
+    
+    return render_template("libro_nuevo.html", mostrar_formulario=False)
 
 
 
