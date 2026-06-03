@@ -4,8 +4,10 @@ from empleado import Empleado
 from cliente import Cliente
 from empleado import Empleado
 from cliente import Cliente
-
+from flask_bcrypt import Bcrypt
 from  libro import Libro
+
+bcrypt = Bcrypt()
 
 app = Flask(__name__)
 app.secret_key = "biblioteca123"
@@ -23,7 +25,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        usuario = biblioteca.login(email, password)
+        usuario = biblioteca.login(email, password, bcrypt)
 
         if usuario:
             session["email"]  = usuario.get_email()
@@ -70,7 +72,7 @@ def empleado_nuevo():
     if request.method == "POST":
         nombre = request.form["nombre"]
         email = request.form["email"]
-        password = (request.form["password"])
+        password = bcrypt.generate_password_hash(request.form["password"]).decode("utf-8")
         cedula = request.form["cedula"]
         rol = request.form["rol"]
         turno = request.form["turno"]
