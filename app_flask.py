@@ -203,14 +203,15 @@ def nuevo_libro():
         resultado = biblioteca.existe_libro_db(isbn)
 
         if resultado:
-            return render_template("libro_nuevo.html", libro = None,isbn = isbn, mostrar_formulario = False, error="El libro ya existe")
+            flash("Este libro ya existe en la base de datos", "danger")
+            return render_template("libro_nuevo.html", libro = None,isbn = isbn, mostrar_formulario = False)
         
         libro_buscar = biblioteca.buscar_libro_db(isbn)
 
         if libro_buscar:
             return render_template("libro_nuevo.html", libro = libro_buscar , mostrar_formulario = True)
         else:
-            return render_template("libro_nuevo.html",libro = None,isbn = isbn, mostrar_formulario = False)
+            return render_template("libro_nuevo.html",libro = None,isbn = isbn, mostrar_formulario = True)
         
     return render_template("libro_nuevo.html")
 
