@@ -272,7 +272,7 @@ class Data_Base:
     def exites_libro(self,isbn):
         self.__cursor.execute(
             "SELECT 1 FROM libros WHERE isbn = ?",
-            (isbn),
+            (isbn,)
         )
 
         resultado = self.__cursor.fetchone()
