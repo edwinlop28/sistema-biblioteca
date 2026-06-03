@@ -225,7 +225,7 @@ def nuevo_libro():
             biblioteca.agregar_libro(libro_nuevo)
             flash("Libro agregado exitosamente", "success")
             return redirect(url_for("dashboard_empleado"))
-
+    return render_template("libro_nuevo.html")
 
 if __name__ == "__main__":
     app.run(debug=False,port=3000)
