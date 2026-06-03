@@ -5,6 +5,7 @@ from cliente import Cliente
 from empleado import Empleado
 from cliente import Cliente
 from flask_bcrypt import Bcrypt
+from  libro import Libro
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -18,7 +19,7 @@ else:
     biblioteca.cargar_libros_db()
 
 password_admin = bcrypt.generate_password_hash("200728").decode("utf-8")
-admin1 = Empleado("Edwin López","1065880632", "edwin@mail.com", password_admin, "mañana", "admin")
+admin1 = Empleado("Edwin López","1065880632", "edwin@mail.com", password_admin, "mañana", "admin") # el admin no se debe crear aqui
 biblioteca.registrar_empleado(admin1)
 
 @app.route("/", methods=["GET", "POST"])
@@ -181,7 +182,6 @@ def eliminar_libros():
         flash(resultado, "success" if "eliminado" in resultado else "danger")
         return redirect(url_for("eliminar_libros"))
 
-    
     libros = biblioteca.obtener_libros()
     return render_template("eliminar_libros.html", libros=libros)
 
@@ -192,7 +192,41 @@ def historial_prestamos():
     prestamos = biblioteca.obtener_historial_prestamos()
     return render_template("historial_prestamos.html", prestamos=prestamos)
     
-    
+
+@app.route("/libros/nuevo", methods=["GET", "POST"])
+def nuevo_libro():
+    if "email" not in session:
+        return redirect(url_for("login"))
+        
+    if session["rol"] != "admin":
+        return redirect(url_for("dashboard_empleado"))
+
+    if request.method == "POST":
+        isbn = request.form["isbn"]
+        resultado = biblioteca.exites_libro(isbn)
+
+        if resultado:
+            flash("Este ISBN ya existe", "danger")
+            return redirect(url_for("nuevo_libro"))
+        
+        libro_buscar = biblioteca.buscar_libro_db(isbn)
+
+        if libro_buscar:
+            biblioteca.agregar_libro(libro_buscar)
+
+            return(redirect(url_for("crear_libro")))   
+        else:
+            titulo = request.form["titulo"]
+            autor = request.form["autor"]   
+            editorial = request.form["editorial"]
+            año_publicacion = request.form["año_publicacion"]
+            cantidad = request.form["cantidad"]
+            libro_nuevo = Libro(isbn, titulo, autor, editorial, año_publicacion,cantidad)
+            biblioteca.agregar_libro(libro_nuevo)
+            flash("Libro agregado exitosamente", "success")
+            return redirect(url_for("dashboard_empleado"))
+
+
 if __name__ == "__main__":
     app.run(debug=False,port=3000)
 
