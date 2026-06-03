@@ -203,7 +203,7 @@ def nuevo_libro():
 
     if request.method == "POST":
         isbn = request.form["isbn"]
-        resultado = biblioteca.exites_libro(isbn)
+        resultado = biblioteca.existe_libro_db(isbn)
 
         if resultado:
             flash("Este ISBN ya existe", "danger")
