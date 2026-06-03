@@ -70,7 +70,7 @@ def empleado_nuevo():
     if request.method == "POST":
         nombre = request.form["nombre"]
         email = request.form["email"]
-        password = bcrypt.generate_password_hash(request.form["password"]).decode("utf-8")
+        password = (request.form["password"])
         cedula = request.form["cedula"]
         rol = request.form["rol"]
         turno = request.form["turno"]
