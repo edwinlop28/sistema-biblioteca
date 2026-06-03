@@ -212,7 +212,7 @@ def nuevo_libro():
         else:
             return render_template("libro_nuevo.html",libro = None,isbn = isbn, mostrar_formulario = False)
         
-    return render_template("buscar_libro.html")
+    return render_template("libro_nuevo.html")
 
 
 
