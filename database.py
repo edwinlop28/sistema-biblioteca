@@ -353,10 +353,11 @@ class Data_Base:
             return True
 
         except Exception as e:
-            print(f"Error al eliminar libro: {e}")
+            print(f"Error al eliminar el libro: {e}")
             return False
 
     def existe_libro(self,isbn):
+        
         self.__cursor.execute(
             "SELECT 1 FROM libros WHERE isbn = ?",
             (isbn,)
@@ -364,6 +365,4 @@ class Data_Base:
         resultado = self.__cursor.fetchone()
 
         return resultado is not None
-
-
 
