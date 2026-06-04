@@ -93,7 +93,7 @@ def cliente_nuevo():
         email = request.form["email"]
         telefono = request.form["telefono"]
         direccion = request.form["direccion"]
-        cliente = Cliente(nombre, cedula, email, telefono, direccion)
+        cliente = Cliente(0,nombre, cedula, email, telefono, direccion)
         resultado = biblioteca.registrar_cliente(cliente)
         flash(resultado, "success" if "registrado" in resultado else "danger")
         return redirect(url_for("dashboard_empleado"))

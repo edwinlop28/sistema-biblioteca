@@ -10,11 +10,6 @@ class Empleado(Persona):
         self.__rol = rol
         self.__turno = turno
         
-    def login(self, email: str, password: str) -> bool:
-        if self.get_email() == email and self.get_password() == password:
-            print(f"Bienvenido {self.get_nombre()}")
-            return True
-        return False
             
     def tipo_usuario(self) -> str:
         return "Empleado"
@@ -24,9 +19,6 @@ class Empleado(Persona):
 
     def get_rol(self):
         return self.__rol
-    
-    def get_prestamos(self):
-        return self.__prestamos
     
     def get_turno(self):
         return self.__turno

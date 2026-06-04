@@ -126,12 +126,12 @@ class Data_Base:
         try:
             self.__cursor.execute("""
             INSERT INTO clientes
-            (nombre, email, cedula, telefono, direccion)
+            (nombre, cedula,email, telefono, direccion)
             VALUES (?, ?, ?, ?, ?)
             """, (
                 cliente.get_nombre(),
-                cliente.get_email(),
                 cliente.get_cedula(),
+                cliente.get_email(),
                 cliente.get_telefono(),
                 cliente.get_direccion()
             ))
@@ -209,7 +209,6 @@ class Data_Base:
     def obtener_clientes_db(self):
        clientes = []
        rows = self.__cursor.execute("SELECT * FROM clientes").fetchall()
-       
        for row in rows:
             cliente = Cliente(row[0],row[1], row[2], row[3], row[4], row[5])
             clientes.append(cliente) 
