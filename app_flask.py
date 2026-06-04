@@ -16,8 +16,6 @@ biblioteca = Biblioteca()
 
 if not biblioteca.hay_libros():
     biblioteca.cargar_libros()
-else:
-    biblioteca.cargar_libros_db()
 
 @app.route("/", methods=["GET", "POST"])
 def login():
