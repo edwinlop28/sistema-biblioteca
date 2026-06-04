@@ -31,17 +31,6 @@ class Libro():
         else:
             print("No se puede prestar")
         
-    def devolver(self):
-        
-        if self.__disponibles < self.__cantidad:
-            self.__disponibles += 1
-            print(f"Libro '{self.__titulo}' devuelto")
-        else:
-            print("Todos los ejemplares ya están en biblioteca")
-    
-    def ver_info(self):
-        print(f"ISBN       : {self.__isbn}\nTítulo     : {self.__titulo}\nAutor      : {self.__autor}\nEditorial  : {self.__editorial}\nAño        : {self.__año}\nDisponibles: {self.__disponibles}/{self.__cantidad}")
-
     def get_isbn(self):
         return self.__isbn
 

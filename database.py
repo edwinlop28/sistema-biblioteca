@@ -175,7 +175,7 @@ class Data_Base:
        Rows = self.__cursor.execute("SELECT * FROM clientes").fetchall()
        
        for row in Rows:
-            cliente = Cliente(row[1], row[2], row[3], row[4], row[5])
+            cliente = Cliente(row[0], row[1], row[2], row[3], row[4], row[5])
             clientes.append(cliente) 
        return clientes
     
