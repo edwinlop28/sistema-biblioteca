@@ -1,14 +1,12 @@
 class Persona():
-    _id_contador: int = 1
     
     def __init__(self, nombre: str = "", email: str = "", cedula: str = ""):
         self.__id = Persona._id_contador
         self.__nombre = nombre
         self.__email = email
         self.__cedula = cedula
-
         self._activo = True
-        Persona._id_contador += 1
+
 
     def get_id(self):
         return self.__id
