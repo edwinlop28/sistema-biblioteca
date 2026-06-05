@@ -32,9 +32,14 @@ class Biblioteca:
     def buscar_cliente_db(self, cedula):
         cli = self.__db.buscar_cliente_cedula(cedula)
         if cli:
-            return Cliente(cli[0], cli[1], cli[2], cli[3], cli[4], cli[5])
+            return Cliente(cli[0], cli[1], cli[2], cli[3], cli[4])
         return None
     
+    def buscar_libro_db(self, criterio):
+        lib = self.__db.buscar_libro_criterio(criterio)
+        if lib:
+            return Libro(lib[0], lib[1], lib[2], lib[3], lib[4], lib[6])
+        return None
     
     def buscar_en_api(self, isbn):
         url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data"

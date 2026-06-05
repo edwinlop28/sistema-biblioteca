@@ -239,13 +239,6 @@ class Data_Base:
         )
         return self.__cursor.fetchone()
 
-    def buscar_libro_criterio(self, criterio):
-        self.__cursor.execute(
-            "SELECT * FROM libros WHERE isbn = ? OR LOWER(titulo) = LOWER(?)", 
-            (criterio, criterio)
-        )
-        return self.__cursor.fetchone()
-
     def buscar_prestamo_activo_isbn(self, isbn):
         self.__cursor.execute("""
             SELECT * FROM prestamos 
@@ -365,3 +358,10 @@ class Data_Base:
 
         return resultado is not None
 
+    def buscar_libro_criterio(self, criterio):
+        self.__cursor.execute(
+            "SELECT * FROM libros WHERE isbn = ? OR LOWER(titulo) = LOWER(?)",
+            (criterio, criterio)
+        )
+        return self.__cursor.fetchone()
+    
