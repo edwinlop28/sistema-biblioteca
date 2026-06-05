@@ -75,7 +75,7 @@ def empleado_nuevo():
         rol = request.form["rol"]
         turno = request.form["turno"]
        
-        empleado = Empleado(nombre, cedula, email, password, turno, rol)
+        empleado = Empleado(0, nombre, cedula, email, password, turno, rol)
         resultado = biblioteca.registrar_empleado(empleado)
         flash(resultado, "success" if "registrado" in resultado else "danger")
         return redirect(url_for("dashboard_empleado"))

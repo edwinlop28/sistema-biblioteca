@@ -18,7 +18,7 @@ class Biblioteca:
     def buscar_empleado_db(self, email):
         empleado = self.__db.buscar_empleado_email(email)
         if empleado:
-            return Empleado(empleado[1], empleado[2], empleado[3], empleado[4], empleado[5], empleado[6])
+            return Empleado(empleado[0], empleado[1], empleado[2], empleado[3], empleado[4], empleado[5], empleado[6])
         return None
     
     def registrar_cliente(self,cliente):
@@ -129,19 +129,11 @@ class Biblioteca:
         emp = self.__db.buscar_empleado_email(email)
         if emp:
             if bcrypt.check_password_hash(emp[4], password):
-                return Empleado(emp[1], emp[2], emp[3], emp[4], emp[5], emp[6])
+                return Empleado(emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6])
         return None
     
     def obtener_libros(self):
         return self.__db.obtener_libros()
-    
-    def cargar_libros_db(self):
-        libros = self.__db.obtener_libros()
-
-        for lib in libros:
-            libro = Libro(lib[0],lib[1],lib[2], lib[3], lib[4], lib[5])
-            self.__libros.append(libro)
-        return f"{len(libros)} Cargados con exitoso"
     
     def hay_libros(self):
         return self.__db.hay_libros()

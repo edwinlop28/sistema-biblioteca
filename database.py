@@ -205,7 +205,7 @@ class Data_Base:
     def obtener_empleados(self):
         self.__cursor.execute("SELECT * FROM empleados")
         return self.__cursor.fetchall()
-    
+
     def obtener_clientes_db(self):
        clientes = []
        rows = self.__cursor.execute("SELECT * FROM clientes").fetchall()
