@@ -3,7 +3,7 @@ class Persona():
     __nombre : str
     __email : str
     __cedula : str
-    def __init__(self,id= 0, nombre = "", email= "", cedula= "", ):
+    def __init__(self,id= 0, nombre = "", cedula= ""  ,email= ""):
         self.__id = id
         self.__nombre = nombre
         self.__email = email

@@ -32,7 +32,7 @@ class Biblioteca:
     def buscar_cliente_db(self, cedula):
         cli = self.__db.buscar_cliente_cedula(cedula)
         if cli:
-            return Cliente(cli[0], cli[1], cli[2], cli[3], cli[4])
+            return Cliente(cli[0], cli[1], cli[2], cli[3], cli[4],cli[5])
         return None
     
     def buscar_libro_db(self, criterio):

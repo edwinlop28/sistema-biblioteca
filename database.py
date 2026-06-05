@@ -126,7 +126,7 @@ class Data_Base:
         try:
             self.__cursor.execute("""
             INSERT INTO clientes
-            (nombre, cedula,email, telefono, direccion)
+            (nombre, cedula, email, telefono, direccion)
             VALUES (?, ?, ?, ?, ?)
             """, (
                 cliente.get_nombre(),
