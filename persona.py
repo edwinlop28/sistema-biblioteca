@@ -1,6 +1,9 @@
 class Persona():
-    
-    def __init__(self,id: int = 0, nombre: str = "", email: str = "", cedula: str = "", ):
+    __id : int
+    __nombre : str
+    __email : str
+    __cedula : str
+    def __init__(self,id= 0, nombre = "", email= "", cedula= "", ):
         self.__id = id
         self.__nombre = nombre
         self.__email = email

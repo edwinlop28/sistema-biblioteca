@@ -3,8 +3,8 @@ class Cliente(Persona):
     __telefono: str
     __direccion: str
     
-    def __init__(self,id: int = 0, nombre: str = "", cedula: str = "", email: str = "", telefono: str = "", direccion: str = ""):
-        super().__init__(id,nombre, email, cedula)
+    def __init__(self,id= 0, nombre = "", cedula = "", email = "", telefono= "", direccion = ""):
+        super().__init__(id,nombre,cedula, email)
         self.__telefono = telefono
         self.__direccion = direccion
 

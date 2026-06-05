@@ -184,6 +184,7 @@ def eliminar_libros():
 def historial_prestamos():
     if "email" not in session:
         return redirect(url_for("login"))
+    
     prestamos = biblioteca.obtener_historial_prestamos()
     return render_template("historial_prestamos.html", prestamos=prestamos)
     
@@ -213,6 +214,7 @@ def nuevo_libro():
             return redirect(url_for("dashboard_empleado"))
         
         resultado_api = biblioteca.buscar_en_api(isbn)
+        
         if resultado_api:
             titulo, autor, editorial, año = resultado_api
             libro = Libro(isbn, titulo, autor, editorial, año, 0)
@@ -221,10 +223,6 @@ def nuevo_libro():
             return render_template("libro_nuevo.html", libro=None, isbn=isbn, mostrar_formulario=True)
     
     return render_template("libro_nuevo.html", mostrar_formulario=False)
-
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=False,port=3000)
