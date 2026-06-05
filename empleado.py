@@ -4,8 +4,8 @@ class Empleado(Persona):
     __rol: str
     __turno: str
 
-    def __init__(self, id: int = 0, nombre: str = "", cedula: str = "", email: str = "", password: str = "", turno: str = "", rol: str = ""):
-        super().__init__(id, nombre, email, cedula)
+    def __init__(self, id=0, nombre="", cedula="", email="", password="", turno="", rol=""):
+        super().__init__(id, nombre, cedula, email)
         self.__password = password
         self.__rol = rol
         self.__turno = turno
