@@ -112,9 +112,9 @@ class Biblioteca:
         self.__db.restar_disponible(libro.get_isbn())
         return "Préstamo registrado exitosamente "
 
-    def buscar_prestamo_por_isbn(self, isbn):
-        return self.__db.buscar_prestamo_activo_isbn(isbn)
-    
+    def buscar_prestamos_por_cedula(self, cedula):
+        return self.__db.buscar_prestamos_activos_cliente(cedula)
+        
     def recibir_devolucion(self, empleado, id_prestamo):
         isbn = self.__db.obtener_isbn_prestamo(id_prestamo)
 

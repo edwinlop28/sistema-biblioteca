@@ -238,26 +238,15 @@ class Data_Base:
             "SELECT * FROM empleados WHERE email = ?", (email,)
         )
         return self.__cursor.fetchone()
-
-    def buscar_prestamo_activo_isbn(self, isbn):
+    
+    def buscar_prestamos_activos_cliente(self, cedula):
         self.__cursor.execute("""
-            SELECT * FROM prestamos 
-            WHERE isbn_libro = ? AND estado = 'activo'
-        """, (isbn,))
-        prestamo = self.__cursor.fetchone()
-        
-        if prestamo:
-            self.__cursor.execute("SELECT titulo FROM libros WHERE isbn = ?", (isbn,))
-            titulo = self.__cursor.fetchone()[0]
-
-            self.__cursor.execute("SELECT nombre FROM clientes WHERE cedula = ?", (prestamo[2],))
-            cliente = self.__cursor.fetchone()[0]
-            
-            self.__cursor.execute("SELECT nombre FROM empleados WHERE email = ?", (prestamo[3],))
-            empleado = self.__cursor.fetchone()[0]
-            
-            return (prestamo[0], titulo, cliente, empleado, prestamo[4], prestamo[5], prestamo[6])
-        return None
+            SELECT prestamos.id, libros.titulo, prestamos.fecha_prestamo, prestamos.fecha_vencimiento
+            FROM prestamos
+            JOIN libros ON prestamos.isbn_libro = libros.isbn
+            WHERE prestamos.cedula_cliente = ? AND prestamos.estado = 'activo'
+        """, (cedula,))
+        return self.__cursor.fetchall()
     
     def cerrar_prestamo(self, id_prestamo, email_empleado):
 

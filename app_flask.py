@@ -124,27 +124,26 @@ def prestamo():
 def devolucion():
     if "email" not in session:
         return redirect(url_for("login"))
-    
+
     prestamo = None
     if request.method == "POST":
 
-        if "isbn" in request.form:
-            isbn = request.form["isbn"]
-            prestamo = biblioteca.buscar_prestamo_por_isbn(isbn)
-
+        if "cedula" in request.form:
+            cedula = request.form["cedula"]
+            prestamo = biblioteca.buscar_prestamos_por_cedula(cedula)
             if not prestamo:
-                flash("No se encontró préstamo activo con ese ISBN ", "danger")
+                flash("No hay préstamos activos para esa cédula", "danger")
                 return redirect(url_for("devolucion"))
-            
-        elif "id_prestamo" in request.form: 
+
+        elif "id_prestamo" in request.form:
             id_prestamo = request.form["id_prestamo"]
             email_empleado = session["email"]
             empleado = biblioteca.buscar_empleado_db(email_empleado)
             resultado = biblioteca.recibir_devolucion(empleado, id_prestamo)
             flash(resultado, "success" if "exitosamente" in resultado else "danger")
             return redirect(url_for("dashboard_empleado"))
-    
-    return render_template("devolucion.html", prestamo=prestamo)
+
+    return render_template("devolucion.html", prestamos=prestamo)
 
 @app.route("/prestamos/activos")
 def prestamos_activos():

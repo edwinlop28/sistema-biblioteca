@@ -15,12 +15,12 @@
 
                 <form method="POST">
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">ISBN del Libro</label>
+                        <label class="form-label fw-semibold">Cédula del Cliente</label>
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="fas fa-barcode"></i>
+                                <i class="fas fa-id-card"></i>
                             </span>
-                            <input type="text" name="isbn" class="form-control" placeholder="Ingresa el ISBN" required>
+                            <input type="text" name="cedula" class="form-control" placeholder="Ingresa la cédula" required>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
@@ -33,31 +33,31 @@
                     </div>
                 </form>
 
-                {% if prestamo %}
+                {% if prestamos %}
                 <hr class="my-4">
-                <h6 class="fw-bold mb-3">Préstamo encontrado:</h6>
-                <div class="card bg-light border-0">
+                <h6 class="fw-bold mb-3">Préstamos activos:</h6>
+
+                {% for p in prestamos %}
+                <div class="card bg-light border-0 mb-3">
                     <div class="card-body">
-                        <p><i class="fas fa-hashtag me-2 text-muted"></i><strong>ID:</strong> {{ prestamo[0] }}</p>
-                        <p><i class="fas fa-book me-2 text-muted"></i><strong>Libro:</strong> {{ prestamo[1] }}</p>
-                        <p><i class="fas fa-user me-2 text-muted"></i><strong>Cliente:</strong> {{ prestamo[2] }}</p>
-                        <p><i class="fas fa-user-tie me-2 text-muted"></i><strong>Prestado por:</strong> {{ prestamo[3] }}</p>
-                        <p><i class="fas fa-calendar me-2 text-muted"></i><strong>Fecha préstamo:</strong> {{ prestamo[5] }}</p>
-                        <p><i class="fas fa-clock me-2 text-muted"></i><strong>Vence:</strong> {{ prestamo[6] }}</p>
+                        <p><i class="fas fa-hashtag me-2 text-muted"></i><strong>ID:</strong> {{ p[0] }}</p>
+                        <p><i class="fas fa-book me-2 text-muted"></i><strong>Libro:</strong> {{ p[1] }}</p>
+                        <p><i class="fas fa-calendar me-2 text-muted"></i><strong>Fecha préstamo:</strong> {{ p[2] }}</p>
+                        <p><i class="fas fa-clock me-2 text-muted"></i><strong>Vence:</strong> {{ p[3] }}</p>
+
+                        <form method="POST">
+                            <input type="hidden" name="id_prestamo" value="{{ p[0] }}">
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="fas fa-check me-2"></i>Confirmar Devolución
+                            </button>
+                        </form>
                     </div>
                 </div>
+                {% endfor %}
 
-                <form method="POST" class="mt-3">
-                    <input type="hidden" name="id_prestamo" value="{{ prestamo[0] }}">
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-check me-2"></i>Confirmar Devolución
-                        </button>
-                        <a href="/empleado" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Volver
-                        </a>
-                    </div>
-                </form>
+                <a href="/empleado" class="btn btn-outline-secondary mt-2">
+                    <i class="fas fa-arrow-left me-2"></i>Volver
+                </a>
                 {% endif %}
 
             </div>
