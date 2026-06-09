@@ -31,4 +31,6 @@ class Prestamo():
     def get_fecha_vencimiento(self):
         return self.__fecha_vencimiento.strftime('%Y-%m-%d %H:%M')
     
+    def get_estado(self):
+        return self.__estado
     
