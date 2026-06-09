@@ -21,9 +21,11 @@ class Biblioteca:
             return Empleado(empleado[0], empleado[1], empleado[2], empleado[3], empleado[4], empleado[5], empleado[6])
         return None
     
-    def registrar_cliente(self,cliente):
-        self.__db.insertar_cliente(cliente)
-        return f"Cliente '{cliente.get_nombre()}' registrado"
+    def registrar_cliente(self, cliente):
+        resultado = self.__db.insertar_cliente(cliente)
+        if resultado:
+            return f"Cliente '{cliente.get_nombre()}' registrado"
+        return f"El email '{cliente.get_email()}' ya existe"
 
     def agregar_libro(self, libro):
         self.__db.insertar_libro(libro)

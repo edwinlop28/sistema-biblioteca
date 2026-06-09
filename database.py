@@ -239,13 +239,18 @@ class Data_Base:
         )
         return self.__cursor.fetchone()
     
-    def buscar_prestamos_activos_cliente(self, cedula):
+    def obtener_prestamos_activos(self):
         self.__cursor.execute("""
-            SELECT prestamos.id, libros.titulo, prestamos.fecha_prestamo, prestamos.fecha_vencimiento
+            SELECT prestamos.id, prestamos.isbn_libro, libros.titulo, 
+                clientes.cedula, clientes.nombre,
+                prestamos.email_empleado_presto, 
+                prestamos.fecha_prestamo, 
+                prestamos.fecha_vencimiento
             FROM prestamos
             JOIN libros ON prestamos.isbn_libro = libros.isbn
-            WHERE prestamos.cedula_cliente = ? AND prestamos.estado = 'activo'
-        """, (cedula,))
+            JOIN clientes ON prestamos.cedula_cliente = clientes.cedula
+            WHERE prestamos.estado = 'activo'
+        """)
         return self.__cursor.fetchall()
     
     def cerrar_prestamo(self, id_prestamo, email_empleado):
@@ -269,12 +274,14 @@ class Data_Base:
         except Exception as e:
             print(f"Error al cerrar préstamo: {e}")
             return False
-
-    def obtener_prestamos_activos(self):
+        
+    def buscar_prestamos_activos_cliente(self, cedula):
         self.__cursor.execute("""
-            SELECT * FROM prestamos 
-            WHERE estado = 'activo'
-        """)
+            SELECT prestamos.id, libros.titulo, prestamos.fecha_prestamo, prestamos.fecha_vencimiento
+            FROM prestamos
+            JOIN libros ON prestamos.isbn_libro = libros.isbn
+            WHERE prestamos.cedula_cliente = ? AND prestamos.estado = 'activo'
+        """, (cedula,))
         return self.__cursor.fetchall()
     
     def restar_disponible(self, isbn):
